@@ -104,4 +104,62 @@ class Queue {
 	}
 }
 
-module.exports = { Stack, Queue };
+/*
+3 - Implement a linked list with insert and delete
+functionalities.
+*/
+class Node {
+	constructor(value) {
+		this.value = value;
+		this.next = null;
+	}
+}
+
+class LinkedList {
+	constructor() {
+		this.head = null;
+	}
+
+	insert(value) {
+		const newNode = new Node(value);
+		if (!this.head) {
+			this.head = newNode;
+		} else {
+			let current = this.head;
+			while (current.next) {
+				current = current.next;
+			}
+			current.next = newNode;
+		}
+	}
+
+	delete(value) {
+		if (!this.head) return;
+
+		if (this.head.value === value) {
+			this.head = this.head.next;
+			return;
+		}
+
+		let current = this.head;
+		while (current.next && current.next.value !== value) {
+			current = current.next;
+		}
+
+		if (current.next) {
+			current.next = current.next.next;
+		}
+	}
+
+	printList() {
+		const elements = [];
+		let current = this.head;
+		while (current) {
+			elements.push(current.value);
+			current = current.next;
+		}
+		return elements.join(' -> ');
+	}
+}
+
+module.exports = { Stack, Queue, LinkedList };
