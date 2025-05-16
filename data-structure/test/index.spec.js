@@ -1,4 +1,4 @@
-const { Stack, Queue } = require('../index');
+const { Stack, Queue, LinkedList } = require('../index');
 
 describe('Stack class', () => {
 	let stack;
@@ -98,5 +98,47 @@ describe('Queue class', () => {
 		queue.enqueue(4);
 		queue.enqueue(5);
 		expect(queue.printQueue()).toBe('3 4 5');
+	});
+});
+
+describe('LinkedList', () => {
+	let list;
+
+	beforeEach(() => {
+		list = new LinkedList();
+	});
+
+	it('insert adds nodes correctly', () => {
+		list.insert(1);
+		list.insert(2);
+		list.insert(3);
+		expect(list.printList()).toBe('1 -> 2 -> 3');
+	});
+
+	it('delete removes the correct node', () => {
+		list.insert(1);
+		list.insert(2);
+		list.insert(3);
+		list.delete(2);
+		expect(list.printList()).toBe('1 -> 3');
+	});
+
+	it('delete head node correctly', () => {
+		list.insert(10);
+		list.insert(20);
+		list.delete(10);
+		expect(list.printList()).toBe('20');
+	});
+
+	it('delete non-existing value does nothing', () => {
+		list.insert(5);
+		list.insert(15);
+		list.delete(100);
+		expect(list.printList()).toBe('5 -> 15');
+	});
+
+	it('delete on empty list does nothing', () => {
+		list.delete(1);
+		expect(list.printList()).toBe('');
 	});
 });
