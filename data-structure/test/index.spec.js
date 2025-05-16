@@ -1,4 +1,4 @@
-const { Stack } = require('../index');
+const { Stack, Queue } = require('../index');
 
 describe('Stack class', () => {
 	let stack;
@@ -51,5 +51,52 @@ describe('Stack class', () => {
 		stack.reverse();
 		expect(stack.printStack()).toBe('3 2 1');
 		expect(stack.peek()).toBe(1);
+	});
+});
+
+describe('Queue class', () => {
+	let queue;
+
+	beforeEach(() => {
+		queue = new Queue();
+	});
+
+	it('isEmpty returns true for a new queue', () => {
+		expect(queue.isEmpty()).toBe(true);
+	});
+
+	it('enqueue adds elements to the queue', () => {
+		queue.enqueue(1);
+		queue.enqueue(2);
+		expect(queue.isEmpty()).toBe(false);
+		expect(queue.printQueue()).toBe('1 2');
+	});
+
+	it('dequeue removes and returns the front element', () => {
+		queue.enqueue(1);
+		queue.enqueue(2);
+		expect(queue.dequeue()).toBe(1);
+		expect(queue.printQueue()).toBe('2');
+	});
+
+	it('dequeue on empty queue returns "Underflow"', () => {
+		expect(queue.dequeue()).toBe('Underflow');
+	});
+
+	it('front returns front element without removing it', () => {
+		queue.enqueue(42);
+		expect(queue.front()).toBe(42);
+		expect(queue.isEmpty()).toBe(false);
+	});
+
+	it('front on empty queue returns "No elements in Queue"', () => {
+		expect(queue.front()).toBe('No elements in Queue');
+	});
+
+	it('printQueue returns a space-separated string of elements', () => {
+		queue.enqueue(3);
+		queue.enqueue(4);
+		queue.enqueue(5);
+		expect(queue.printQueue()).toBe('3 4 5');
 	});
 });
