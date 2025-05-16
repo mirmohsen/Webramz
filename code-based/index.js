@@ -19,7 +19,7 @@ function authMiddleware(req, res, next) {
 	}
 }
 
-//- 1b - Middleware with Token Renewal
+//-> 1b - Middleware with Token Renewal
 
 function authMiddlewareWithAutoRenew(req, res, next) {
 	const authHeader = req.headers.authorization;
@@ -43,3 +43,14 @@ function authMiddlewareWithAutoRenew(req, res, next) {
 		return res.status(401).json({ message: 'Invalid or expired token' });
 	}
 }
+
+//! 2 - Mongoose Populate with Optimization
+// User.find().populate('profile').lean().exec();
+const getUsersWithProfiles = async () => {
+	return User.find({}, null, { lean: true }).populate('profile', '-__v');
+};
+
+//-> 2b - Indexing MongoDB Collections
+
+// db.users.createIndex({ 'profile': 1 })
+// Depending on the structure, we add an index to the foreign key reference field in the user or profile.
