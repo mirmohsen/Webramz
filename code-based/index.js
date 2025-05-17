@@ -55,30 +55,73 @@ const getUsersWithProfiles = async () => {
 // db.users.createIndex({ 'profile': 1 })
 // Depending on the structure, we add an index to the foreign key reference field in the user or profile.
 
-	//! 3 - Express Route with Async/Await and Error Handling
-	const express = require('express');
-	const router = express.Router();
+//! 3 - Express Route with Async/Await and Error Handling
+const express = require('express');
+const router = express.Router();
 
-	router.get('/user/:id', async (req, res) => {
-		try {
-			const user = await User.findById(req.params.id);
-			if (!user) return res.status(404).json({ message: 'User not found' });
-			res.json(user);
-		} catch (error) {
-			res.status(500).json({ message: 'Internal Server Error' });
+router.get('/user/:id', async (req, res) => {
+	try {
+		const user = await User.findById(req.params.id);
+		if (!user) return res.status(404).json({ message: 'User not found' });
+		res.json(user);
+	} catch (error) {
+		res.status(500).json({ message: 'Internal Server Error' });
+	}
+});
+
+//-> 3b - Refactored Route with Middleware
+
+const asyncHandler = (fn) => (req, res, next) =>
+	Promise.resolve(fn(req, res, next)).catch(next);
+
+router.get(
+	'/user/:id',
+	asyncHandler(async (req, res) => {
+		const user = await User.findById(req.params.id);
+		if (!user) return res.status(404).json({ message: 'User not found' });
+		res.json(user);
+	})
+);
+
+//! 4 - Multer Config for Image Uploads
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.memoryStorage();
+const upload = multer({
+	storage,
+	limits: { fileSize: 1 * 1024 * 1024 },
+	fileFilter: (req, file, cb) => {
+		const filetypes = /jpeg|jpg|png/;
+		const extname = filetypes.test(
+			path.extname(file.originalname).toLowerCase()
+		);
+		const mimetype = filetypes.test(file.mimetype);
+		if (extname && mimetype) {
+			return cb(null, true);
+		} else {
+			cb(new Error('Only JPEG and PNG files are allowed'));
 		}
+	},
+});
+
+//-> 4b - Handle Multiple Files
+router.post('/upload', upload.array('images', 10), (req, res) => {
+	const files = req.files;
+	if (!files) return res.status(400).send('No files uploaded');
+	files.forEach((file) => {
+		const fs = require('fs');
+		const path = require('path');
+		const uploadDir = path.join(__dirname, 'uploads');
+
+		if (!fs.existsSync(uploadDir)) {
+			fs.mkdirSync(uploadDir);
+		}
+
+		const filename = `${Date.now()}-${file.originalname}`;
+		const filepath = path.join(uploadDir, filename);
+
+		fs.writeFileSync(filepath, file.buffer);
 	});
-
-	//-> 3b - Refactored Route with Middleware
-
-	const asyncHandler = (fn) => (req, res, next) =>
-		Promise.resolve(fn(req, res, next)).catch(next);
-
-	router.get(
-		'/user/:id',
-		asyncHandler(async (req, res) => {
-			const user = await User.findById(req.params.id);
-			if (!user) return res.status(404).json({ message: 'User not found' });
-			res.json(user);
-		})
-	);
+	res.send('Files uploaded successfully');
+});
