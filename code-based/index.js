@@ -133,3 +133,28 @@ const getOrdersWithUsers = async () => {
 
 //-> 5b - Index for Optimization
 db.orders.createIndex({ user: 1 });
+
+//! 6 - Multer Config for Up to 5 Image Uploads
+const uploadImages = multer({
+	storage,
+	limits: { fileSize: 1 * 1024 * 1024 }, //->  Limit file size to 1MB
+	fileFilter: (req, file, cb) => {
+		const filetypes = /jpeg|jpg|png/;
+		const extname = filetypes.test(
+			path.extname(file.originalname).toLowerCase()
+		);
+		const mimetype = filetypes.test(file.mimetype);
+		if (extname && mimetype) {
+			return cb(null, true);
+		} else {
+			cb(new Error('Only JPEG and PNG files are allowed'));
+		}
+	},
+}).array('images', 5); //-> Limit to 5 files
+
+router.post('/multi-upload', (req, res) => {
+	uploadImages(req, res, (err) => {
+		if (err) return res.status(400).json({ message: err.message });
+		res.send('Up to 5 image files uploaded');
+	});
+});
