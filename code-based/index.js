@@ -125,3 +125,11 @@ router.post('/upload', upload.array('images', 10), (req, res) => {
 	});
 	res.send('Files uploaded successfully');
 });
+
+//! 5 - Optimized Query to Populate Orders with Users
+const getOrdersWithUsers = async () => {
+	return await Order.find().populate('user', 'name email -_id').lean();
+};
+
+//-> 5b - Index for Optimization
+db.orders.createIndex({ user: 1 });
