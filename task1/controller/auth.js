@@ -1,5 +1,6 @@
 import { createUser, existUser, getUserByEmail } from '../model/user.js';
 import { comparePassword } from '../utils/encryption.js';
+import { generateToken } from '../utils/jwt.js';
 import { userSignupSchema, userSigninSchema } from '../utils/validation.js';
 
 export const signup = async (req, res) => {
@@ -47,9 +48,11 @@ export const signin = async (req, res) => {
 			return res.status(401).json({ message: 'Invalid email or password' });
 		}
 
+		const token = generateToken({ userId: userExist._id });
+
 		return res
 			.status(200)
-			.json({ message: 'Signin successful', userId: userExist._id });
+			.json({ message: 'Signin successful', token, userId: userExist._id });
 	} catch (err) {
 		console.error('Signin error:', err);
 		return res.status(500).json({ message: 'Internal server error' });
