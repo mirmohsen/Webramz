@@ -10,7 +10,8 @@ import './model/setup/mongodb.js';
 const app = express();
 const port = process.env.PORT || 8080;
 
-app.use('/api/v1', routerV1);
+app.use(express.json());
+app.use('/api', routerV1);
 
 app.listen(port, () => {
 	console.log(`====>> server up on port:${port}`);
