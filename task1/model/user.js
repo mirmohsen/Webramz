@@ -40,4 +40,6 @@ export const createUser = async (email, username, password) => {
 	return create;
 };
 
-
+export const getUserByEmail = async (email) => {
+	return await user.findOne({ email });
+};
