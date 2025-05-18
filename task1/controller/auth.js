@@ -4,6 +4,10 @@ export const signup = async (req, res) => {
 	const { email, username, password } = req.body;
 
 	try {
+		if (!isValidEmail(email)) {
+			return res.status(400).json({ message: 'Invalid email format' });
+		}
+
 		const userExists = await existUser(email);
 
 		if (userExists) {
