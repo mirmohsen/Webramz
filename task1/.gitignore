@@ -3,3 +3,11 @@ node_modules/
 # Docker volumes, logs, etc.
 *.log
 docker-compose.override.yml
+
+# Ignore all files inside uploads and thumbs
+uploads/*
+thumbs/*
+
+# But do not ignore the directories themselves
+!uploads/.gitkeep
+!thumbs/.gitkeep
