@@ -1,0 +1,218 @@
+{
+	"info": {
+		"_postman_id": "3b576069-dfb8-4f85-9f59-771c720c00f6",
+		"name": "webramz",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18988093"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "create user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"test one\",\n    \"email\": \"test@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/auth/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign in",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "upload",
+			"item": [
+				{
+					"name": "upload file",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODJhZTQ0MTNmNDcyYjMwOTk2OGE4NzUiLCJpYXQiOjE3NDc2NDE1MjksImV4cCI6MTc0ODI0NjMyOX0.7NvWoPtkWtnxh_iRIKrU0SzHxAYnA1m9cpoKncIjP_8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/jason/Desktop/Screenshot 2025-03-27 at 9.02.05 PM.png"
+								},
+								{
+									"key": "title",
+									"value": "my image",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "this is simple test file",
+									"type": "text"
+								},
+								{
+									"key": "alignment",
+									"value": "Landscape",
+									"type": "text"
+								},
+								{
+									"key": "resolution",
+									"value": "HD",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/file-manager/upload",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"file-manager",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "search",
+			"item": [
+				{
+					"name": "search",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODJhZTQ0MTNmNDcyYjMwOTk2OGE4NzUiLCJpYXQiOjE3NDc2NDE1MjksImV4cCI6MTc0ODI0NjMyOX0.7NvWoPtkWtnxh_iRIKrU0SzHxAYnA1m9cpoKncIjP_8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/file/search?search=my%20image&alignment=Landscape&fileType=image&resolution=HD&period=1week&page=1&limit=10&sortBy=uploadedDate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"file",
+								"search"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "my%20image"
+								},
+								{
+									"key": "alignment",
+									"value": "Landscape"
+								},
+								{
+									"key": "fileType",
+									"value": "image"
+								},
+								{
+									"key": "resolution",
+									"value": "HD"
+								},
+								{
+									"key": "period",
+									"value": "1week"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "uploadedDate"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
