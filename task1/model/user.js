@@ -1,4 +1,3 @@
-// models/User.js
 import mongoose from 'mongoose';
 import { hashPassword } from '../utils/encryption.js';
 
